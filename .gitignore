@@ -1,0 +1,6 @@
+dist/
+compiled/
+*.zo
+*.dep
+*.log
+.DS_Store
