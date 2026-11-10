@@ -1,85 +1,53 @@
-# finite-rule-provenance
+# Finite Rule Provenance
 
-[![CI](https://github.com/martinlofranodeoliveira/finite-rule-provenance/actions/workflows/ci.yml/badge.svg)](https://github.com/martinlofranodeoliveira/finite-rule-provenance/actions/workflows/ci.yml)
-[![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-blue.svg)](LICENSE)
-[![Racket](https://img.shields.io/badge/Racket-8.7-blue.svg)](https://racket-lang.org/)
+Versão de desenvolvimento 0.1.0: biblioteca offline de Datalog estratificado limitado, com uma derivação por fato e evidência de ausência em estrato inferior. Adoção é hipótese, sem alegação de usuários, certificação ou prontidão de produção. [English](README.md).
 
-Motor limitado de Datalog estratificado em Racket que calcula pontos fixos relacionais finitos e registra proveniência determinística de derivação com evidências explícitas de ausência em estratos inferiores.
+A API exporta `program`, `rule`, `literal`, `var-term`, `const-term`, `fact`, `evaluate-datalog`, `run-program-rehearsal` e os acessores de `evaluation-result`. A avaliação semi-ingênua original usa conjuntos relacionais e rodadas diferenciais. Não oferece Prolog geral, agregações, aritmética, termos funcionais, persistência, atualização incremental ou predicados externos. Não é um motor de decisões de autorização, jurídicas, médicas ou financeiras.
 
-Disponível também em [Inglês](README.md).
+## Compilar e instalar
 
-## Funcionalidades
+Plataforma nativa qualificada: Linux x86-64, Racket 8.7 CS (Debian `8.7+dfsg1-1`) e SQLite `3.40.1-2+deb12u2`. `json`, `db`, ferramentas de pacote e RackUnit mantidos pelo Racket preservam suas funções. `qualification/` contém os checksums reais de pacotes e artefatos Debian; não existe um lockfile Racket inventado. As etapas offline não baixam dependências.
 
-- **Avaliação Estratificada**: Analisa grafos de dependência sinalizados e calcula estratos ótimos, rejeitando ciclos negativos como `INVALID_PROGRAM`.
-- **Avaliação Semi-Ingênua Indexada**: Minimiza junções redundantes entre rodadas recursivas de ponto fixo utilizando diferenciais $\Delta$.
-- **Proveniência Determinística de Prova Única**: Registra exatamente uma derivação imutável por fato derivado com ordinais de premissas estritamente anteriores.
-- **Evidência Explícita de Ausência**: Literais negativos em corpos de regras registram testemunhos formais de ausência em estratos inferiores já fechados.
-- **Reprodutor Independente de Provas**: Reavalia derivações passo a passo, verificando unificações de variáveis e detectando adulterações de premissas.
-- **Oráculo Relacional Isolado (SQLite)**: Valida pontos fixos de forma independente via junções relacionais e cláusulas `NOT EXISTS` em SQLite com nomes de tabelas sintéticos (`rel_0`).
-- **Limites Rígidos de Recursos**: Impõe limites para predicados ($\le 16$), constantes ($\le 32$), fatos de entrada ($\le 4096$), regras ($\le 64$), fatos materializados ($\le 32768$) e passos de unificação ($\le 2000000$), retornando `UNKNOWN_BUDGET` em caso de estouro de limites.
-- **Zero Dependências Externas**: Implementado integralmente com componentes da biblioteca padrão do Racket (`racket/base`, `json`, `db`, `rackunit`).
-
-## Guia Rápido
-
-### Executar Testes e Afirmações Offline
-
-```bash
-# Executar suíte de testes unitários com raco test
-./scripts/test-offline.sh
-
-# Executar afirmações analíticas através do executável CLI
-./scripts/demo-offline.sh --assert
-
-# Executar demonstração com saída formatada em JSON
-./scripts/demo-offline.sh --json
+```sh
+docker build --target sdk -t finite-rule-sdk .
+docker run --rm --network none --user 1000:1000 --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1g --cpus 2 finite-rule-sdk /bin/sh scripts/package-gate.sh
+docker build -t finite-rule-provenance .
+docker run --rm --network none --user 1000:1000 --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1g --cpus 2 finite-rule-provenance demo --assert --json
 ```
 
-### Interface de Linha de Comando (CLI)
+O Dockerfile separa preparação oficial, SDK offline e distribuição executável. A imagem final não inclui compilador Racket, checkout ou resolvedor de pacotes. Em instalação nativa preparada, use `/bin/sh scripts/test-offline.sh`, `/bin/sh scripts/build-offline.sh` e `/bin/sh scripts/demo-offline.sh --assert`. O demo não compila durante sua execução.
 
-```bash
-# Avaliar arquivo Datalog em JSON
-./dist/finite-rule-provenance eval program.json --json
+Crie o arquivo real com `raco pkg create --source --format zip --dest /seus/artefatos /seu/checkout`. Instale sob HOME explícito com `raco pkg install --scope user --deps fail --batch --no-setup --name finite-rule-provenance /seus/artefatos/checkout.zip`; a distribuição preparada já deve fornecer todas as dependências. O gate verifica os bytes exatos do arquivo, instala em escopo novo e usa um consumidor fora do checkout. Arquivos de controle de versão/workflow são excluídos pelo empacotador e declarados fora do inventário do pacote.
 
-# Reexaminar e verificar provas de derivação independentemente
-./dist/finite-rule-provenance replay program.json
+## CLI e API
 
-# Validação cruzada com o motor relacional SQLite
-./dist/finite-rule-provenance oracle program.json
+A atualização de desenvolvimento lê JSON **somente de stdin**; o argumento anterior de caminho foi removido. Redirecionamento é responsabilidade do chamador; o programa não abre caminhos arbitrários.
+
+```sh
+printf '%s' '{"edb_facts":[{"predicate":"ready","args":[]}],"rules":[]}' | ./dist/distribution/bin/finite-rule-provenance eval --json
+./dist/distribution/bin/finite-rule-provenance replay < examples/program.json
+./dist/distribution/bin/finite-rule-provenance oracle < examples/program.json
+./dist/distribution/bin/finite-rule-provenance demo --json
 ```
 
-## Uso Programático
+O exemplo `examples/program.json` está incluído. `eval` calcula; `replay` recalcula e verifica a própria prova; `oracle` também compara com SQLite e exige no máximo oito constantes. Não lê recibos de prova externos. O demo verifica o mesmo exemplo sintético original de oito fatos em texto, `--assert`, `--json` ou ambos. `--help` mostra o uso. Argumentos desconhecidos, repetidos ou deslocados são inválidos.
 
 ```racket
 #lang racket/base
-
 (require finite-rule-provenance)
-
-(define prog
-  (program
-   (list
-    (rule 'r_step
-          (literal 'path (list (var-term 'X) (var-term 'Y)) #t)
-          (list (literal 'edge (list (var-term 'X) (var-term 'Y)) #t)))
-    (rule 'r_trans
-          (literal 'path (list (var-term 'X) (var-term 'Z)) #t)
-          (list (literal 'path (list (var-term 'X) (var-term 'Y)) #t)
-                (literal 'edge (list (var-term 'Y) (var-term 'Z)) #t))))
-   (list
-    (fact 'edge #(a b))
-    (fact 'edge #(b c)))))
-
-(define res (run-program-rehearsal prog #:oracle? #t))
-
-(printf "Status: ~a\n" (evaluation-result-status res))
-(printf "Total de fatos derivados: ~a\n" (length (evaluation-result-facts res)))
+(define resultado (evaluate-datalog (program null (list (fact 'ready #())))))
+(displayln (evaluation-result-status resultado)) ; COMPLETE
+(displayln (evaluation-result->json-string resultado))
 ```
 
-## Documentação
+Estados: `COMPLETE`, `UNKNOWN_BUDGET`, `INVALID_PROGRAM`, `INCOMPLETE`; saídas CLI respectivas 0, 1, 2, 3. Erros de uso/entrada saem 2. Falhas de verificação, cálculo e I/O são incompletas, não negativas matemáticas. Erro de oráculo ou timeout nunca conta como rejeição comprovada. Os wrappers incompletos não expõem fatos/provas parciais. A função de baixo nível `evaluate-program` mantém seu contrato de exceções; normalmente use `evaluate-datalog`.
 
-- [Contrato e Limites de Recursos](docs/contract.md)
-- [Design Arquitetural](docs/design.md)
-- [Visão de Produto](PRODUCT.md)
+JSON de saída tem um valor UTF-8, newline e código de saída correspondente. Exija quadro inteiro e código correto: stdout não é atômico e pode truncar em falha. O leitor JSON mantido usa o último membro em chaves duplicadas; propriedades desconhecidas são rejeitadas. Constantes JSON são strings ou inteiros exatos; nomes não vazios; termos têm exatamente `var` ou `const`; IDs de regra são únicos e `edb` é reservado.
 
-## Licença
+## Limites e limitações
 
-Este projeto é distribuído sob a [Licença MIT](LICENSE) © 2026 Lofrano Tecnologia.
+Até 16 predicados de aridade 0..3, 32 constantes, 4096 fatos de entrada, 64 regras e seis variáveis/literais por regra. Variáveis do cabeçalho/negação precisam ocorrer positivamente; ciclos negativos são inválidos. Tetos: 32768 fatos, 131072 arestas positivas de prova, 2000000 exames candidatos, 262144 bytes UTF-8 de entrada e 8388608 bytes de saída completa, incluindo newline. API/encoder aceitam orçamento menor de saída entre 512 e 8388608. Falta de orçamento não prova vazio nem publica relação parcial.
+
+Contadores lógicos não limitam alocações do parser, VM, objetos JSON, conversão de strings, SQLite nativo, RSS ou tempo de execução. O destino de bytes confere antes de acrescentar, mas representações internas podem alocar antes. Streams herdados bloqueados são incompletos sob o proprietário externo do contêiner. Exige filesystem Linux local cooperativo, checkout estável e acesso não concorrente a AST/recibos; não promete snapshot hostil nem sandbox profundo de objetos. A aplicação não usa sinais por PID/PGID, subprocessos, rede, telemetria, credenciais ou APIs externas.
+
+Consulte [contrato](docs/contract.md), [design](docs/design.md) e [avisos de terceiros](THIRD_PARTY_NOTICES.md). Código original [MIT](LICENSE), © 2026 Lofrano Tecnologia; dependências preservam suas licenças. Site oficial: https://lofranotecnologia.com.br.

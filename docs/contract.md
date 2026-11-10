@@ -44,3 +44,11 @@
 3. **Negative Evidence**:
    - Each negative body literal produces an absence witness: $(\text{predicate}, \text{tuple}, \text{stratum})$.
    - The absence witness proves that $\text{tuple} \notin \text{relation}(\text{predicate})$ at the time stratum was closed.
+
+## Framing, I/O and failure boundaries
+
+The CLI accepts JSON only through stdin and retains at most 262145 bytes before rejecting excess. The input limit is UTF-8 bytes, not character count. No arbitrary pathname adapter is exposed. JSON uses the maintained reader's last-member-wins duplicate policy and rejects unknown schema properties. Typed AST calls accept only the documented structures/scalar constants; stable nonconcurrent caller objects are required.
+
+`evaluate-datalog` admits complete output through a private bounded byte sink before returning COMPLETE. The 8388608-byte cap includes newline; an explicitly smaller output budget must be 512..8388608. Excess produces UNKNOWN_BUDGET with empty facts/proofs. JSON serializers apply the same admission. Parsing, object construction and VM/native allocation can precede byte-sink checks; counters do not guarantee RSS or deadlines.
+
+CLI status/exit pairs are COMPLETE/0, UNKNOWN_BUDGET/1, INVALID_PROGRAM/2, INCOMPLETE/3. Verification and infrastructure errors are incomplete, never negative proofs. Require one full newline-terminated JSON frame and its matching exit. Output is not atomic and may be truncated by I/O failure. Stalled inherited streams remain incomplete under external container ownership. Only owned cooperative local Linux filesystems and stable evidence leases are qualified.

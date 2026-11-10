@@ -1,0 +1,12 @@
+# Third-party distribution notices / Avisos de terceiros
+
+The root MIT license applies only to original project source. It does not relicense Racket, SQLite, Debian or their components. A licença MIT da raiz cobre apenas o código original deste projeto.
+
+The exact prepared Debian artifacts, versions and SHA-256 values are recorded in `qualification/deb-artifact-lock.json` and `qualification/deb-files.sha256`; resolved installation-wide Racket package checksums are in `qualification/racket-installed-packages.txt`. `qualification/racket-source-closure.txt` records the exact SDK source-file hashes. These are observed artifacts, not a Racket-native dependency lockfile.
+
+* Racket 8.7 CS / Debian 8.7+dfsg1-1: official sources https://download.racket-lang.org/ and https://packages.debian.org/bookworm/racket . Preserve `third_party/debian/racket/copyright`, `racket-common/copyright` and the complete actual package LICENSE/COPYING texts under `third_party/racket/`. Package-specific licenses take precedence over broad summaries. The prepared distribution's Debian copyright record includes legacy components and notices; do not infer that the whole tree has one license.
+* SQLite 3.40.1-2+deb12u2: https://www.sqlite.org/copyright.html and `third_party/debian/libsqlite3-0/copyright`; SQLite is public domain, with Debian packaging notices retained separately.
+* Native runtime closure: glibc 2.36-9+deb12u14, zlib 1.2.13.dfsg-1 and LZ4 1.9.4-1 are provided by the exact Debian base/SDK artifacts. Their actual Debian copyright notices are retained under the corresponding `third_party/debian/` directories. The Debian base is pinned to digest `734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc`.
+* The preparation SDK also contains native development/certificate libraries. All 25 acquired artifact copyright files are preserved, together with the base native-library notices and full common-license texts in `third_party/common-licenses/`. These tooling libraries are not declared MIT.
+
+The actual executable distribution includes Racket CS, its embedded compiled module closure, and dynamically loaded native SQLite/zlib/LZ4 plus the base C runtime. The final Docker runtime copies this notice directory; it does not download code or require a compiler. No modified Racket/SQLite library is shipped. Source project archive verification records exact original versus packaged files; generated executables and bytecode have separate artifact hashes.

@@ -1,29 +1,34 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
-
 permissions:
   contents: read
-
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Setup Racket & SQLite
+      - name: Record hosted runner and source identity
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends racket sqlite3 libsqlite3-0 libsqlite3-dev
-      - name: Run offline test script
-        run: /bin/sh scripts/test-offline.sh
-      - name: Run offline demo script with assertions
-        run: /bin/sh scripts/demo-offline.sh --assert
-      - name: Run offline demo script with json output
-        run: /bin/sh scripts/demo-offline.sh --json
+          printf '%s\n' "$RUNNER_OS" "$RUNNER_ARCH" "$ImageOS" "$ImageVersion" "$GITHUB_SHA"
+          uname -m
+      - name: Prepare exact official artifacts and offline SDK
+        run: docker build --target sdk --tag finite-rule-sdk .
+      - name: Native, oracle, archive and outside-consumer gates
+        run: >-
+          docker run --rm --pull=never --network none --user 1000:1000
+          --cap-drop ALL --security-opt no-new-privileges --pids-limit 256
+          --memory 1g --cpus 2 --env HOME=/work/home finite-rule-sdk
+          /bin/sh scripts/package-gate.sh
+      - name: Build actual public runtime image
+        run: docker build --tag finite-rule-runtime .
+      - name: Exercise no-bind runtime without compiler or checkout
+        run: |
+          docker run --rm --pull=never --network none --read-only --user 1000:1000 --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1g --cpus 2 --tmpfs /tmp:rw,exec,nosuid,nodev,size=128m --env HOME=/tmp finite-rule-runtime demo --assert
+          docker run --rm --pull=never --network none --read-only --user 1000:1000 --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1g --cpus 2 --tmpfs /tmp:rw,exec,nosuid,nodev,size=128m --env HOME=/tmp finite-rule-runtime demo --json

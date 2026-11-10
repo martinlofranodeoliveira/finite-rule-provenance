@@ -1,0 +1,13 @@
+#lang racket/base
+(require racket/path finite-rule-provenance)
+(define location (path->string (simplify-path (collection-file-path "main.rkt" "finite-rule-provenance"))))
+(unless (regexp-match? #rx"^/work/home/\\.local/share/racket/8[.]7/pkgs/finite-rule-provenance/" location)
+  (error 'consumer "Library was not loaded from the isolated archive installation"))
+(define result (evaluate-datalog (program null (list (fact 'available #())))))
+(unless (and (eq? (evaluation-result-status result) 'COMPLETE)
+             (= (length (evaluation-result-facts result)) 1)
+             (replay-all-proofs (program null (list (fact 'available #()))) result))
+  (error 'consumer "Installed API result mismatch"))
+(unless (eq? (evaluation-result-status (evaluate-datalog "{invalid")) 'INVALID_PROGRAM)
+  (error 'consumer "Installed error contract mismatch"))
+(displayln "PASS: isolated archive-installed outside-checkout consumer")

@@ -20,3 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive test suite (`tests/datalog_test.rkt`) with 34 test assertions covering 10 test groups.
 - Offline execution scripts (`scripts/test-offline.sh`, `scripts/demo-offline.sh`).
 - GitHub Actions CI workflow with offline qualification.
+
+### Development hardening
+
+* Replaced the JSON input-path argument with bounded stdin, explicit UTF-8 byte admission and sanitized errors.
+* Added output admission with complete framing and no partial budget relation, and separated production demo code from tests.
+* Corrected all demo flag routes and added real archive consumers, exact artifact/notice records and a public Docker/CI flow.

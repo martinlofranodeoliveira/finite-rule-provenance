@@ -1,0 +1,5 @@
+.git
+dist
+compiled
+**/compiled
+*.log

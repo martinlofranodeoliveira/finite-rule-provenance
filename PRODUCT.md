@@ -33,3 +33,7 @@ In distributed policy evaluation, compliance auditing, access control verificati
 5. **Relational Oracle Validation**:
    - Includes an independent SQLite relational evaluator that translates Datalog programs with up to 8 constants into relational queries (`JOIN`, `NOT EXISTS`).
    - Completely isolates user predicate and variable names by translating them into synthetic SQL identifiers (`rel_0`, `col_0`).
+
+## Distribution boundary
+
+This development SDK uses stdin-only JSON and explicit complete/incomplete result framing. Original MIT source, Racket/SQLite runtime and Debian tooling have separate licenses described in THIRD_PARTY_NOTICES.md. Logical bounds are not memory or deadline guarantees. No production adoption, authorization certification or commercial delivery is asserted.

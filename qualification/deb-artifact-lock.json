@@ -1,0 +1,155 @@
+{
+  "base": "debian@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc",
+  "packages": [
+    {
+      "file": "ca-certificates_20250419~deb12u2_all.deb",
+      "size": 160948,
+      "sha256": "b9f76b5271a7ac373fd5e7e1b5b826a71ddd702b42a0d104955ecb1acfffc94b",
+      "metadata": "Package: ca-certificates\nVersion: 20250419~deb12u2\nArchitecture: all\n"
+    },
+    {
+      "file": "libc-dev-bin_2.36-9+deb12u14_amd64.deb",
+      "size": 48056,
+      "sha256": "f61d923b703401023bec2ac3d9d1c9ad7341930fbe11736f7f5ef64b489d03c4",
+      "metadata": "Package: libc-dev-bin\nVersion: 2.36-9+deb12u14\nArchitecture: amd64\nSource: glibc\n"
+    },
+    {
+      "file": "libc6-dev_2.36-9+deb12u14_amd64.deb",
+      "size": 1903668,
+      "sha256": "0218fc2befcd784c1b0c6292c0a137ce89fad054efaa579ad083bee0f2c01aae",
+      "metadata": "Package: libc6-dev\nVersion: 2.36-9+deb12u14\nArchitecture: amd64\nSource: glibc\n"
+    },
+    {
+      "file": "libcrypt-dev_1%3a4.4.33-2_amd64.deb",
+      "size": 118144,
+      "sha256": "81ccd29130f75a9e3adabc80e61921abff42f76761e1f792fa2d1bb69af7f52f",
+      "metadata": "Package: libcrypt-dev\nVersion: 1:4.4.33-2\nArchitecture: amd64\nSource: libxcrypt\n"
+    },
+    {
+      "file": "libgssapi-krb5-2_1.20.1-2+deb12u5_amd64.deb",
+      "size": 135168,
+      "sha256": "d8b87aea91b956b416c01a28c44ff6228315ae3b73de40acddac3dc5043607d2",
+      "metadata": "Package: libgssapi-krb5-2\nVersion: 1.20.1-2+deb12u5\nArchitecture: amd64\nSource: krb5\n"
+    },
+    {
+      "file": "libk5crypto3_1.20.1-2+deb12u5_amd64.deb",
+      "size": 79712,
+      "sha256": "7b6e47d15c5c9cdcd456137533d8308aeba608a54cec73b28bd59bfc4b54cf06",
+      "metadata": "Package: libk5crypto3\nVersion: 1.20.1-2+deb12u5\nArchitecture: amd64\nSource: krb5\n"
+    },
+    {
+      "file": "libkeyutils1_1.6.3-2_amd64.deb",
+      "size": 8808,
+      "sha256": "cfac89e6a7a54ff3c6a4f843310e25efeddaa771baeae470bd98bd588c373563",
+      "metadata": "Package: libkeyutils1\nVersion: 1.6.3-2\nArchitecture: amd64\nSource: keyutils\n"
+    },
+    {
+      "file": "libkrb5-3_1.20.1-2+deb12u5_amd64.deb",
+      "size": 332280,
+      "sha256": "c90801be09701af221b54dd502a59cb378b7284ff31e480738baca317d2f7653",
+      "metadata": "Package: libkrb5-3\nVersion: 1.20.1-2+deb12u5\nArchitecture: amd64\nSource: krb5\n"
+    },
+    {
+      "file": "libkrb5support0_1.20.1-2+deb12u5_amd64.deb",
+      "size": 33212,
+      "sha256": "8b9c05f2d8d461a10d657b118f572af5bf8fd6c8f93dcef81e852c5ab0f428ab",
+      "metadata": "Package: libkrb5support0\nVersion: 1.20.1-2+deb12u5\nArchitecture: amd64\nSource: krb5\n"
+    },
+    {
+      "file": "libnsl-dev_1.3.0-2_amd64.deb",
+      "size": 66436,
+      "sha256": "bb81a188c119cd7fdebae723cbc95887b6c549b2fe4fb7e268a9c8846444da99",
+      "metadata": "Package: libnsl-dev\nVersion: 1.3.0-2\nArchitecture: amd64\nSource: libnsl\n"
+    },
+    {
+      "file": "libnsl2_1.3.0-2_amd64.deb",
+      "size": 39480,
+      "sha256": "c0d83437fdb016cb289436f49f28a36be44b3e8f1f2498c7e3a095f709c0d6f8",
+      "metadata": "Package: libnsl2\nVersion: 1.3.0-2\nArchitecture: amd64\nSource: libnsl\n"
+    },
+    {
+      "file": "libreadline8_8.2-1.3_amd64.deb",
+      "size": 165760,
+      "sha256": "e02ebbd3701cf468dbf98d6d917fbe0325e881f07fe8b316150c8d2a64486e66",
+      "metadata": "Package: libreadline8\nVersion: 8.2-1.3\nArchitecture: amd64\nSource: readline\n"
+    },
+    {
+      "file": "libsqlite3-0_3.40.1-2+deb12u2_amd64.deb",
+      "size": 838808,
+      "sha256": "a8d78b40e9b4e422224aeebfe0e4dfc243f6acf3532490b0c05480d4283d41e2",
+      "metadata": "Package: libsqlite3-0\nVersion: 3.40.1-2+deb12u2\nArchitecture: amd64\nSource: sqlite3\n"
+    },
+    {
+      "file": "libsqlite3-dev_3.40.1-2+deb12u2_amd64.deb",
+      "size": 1025140,
+      "sha256": "afb550eb103e717000a2c7adae2e06e3eebd2952bf7d243ae2f1ca8594307563",
+      "metadata": "Package: libsqlite3-dev\nVersion: 3.40.1-2+deb12u2\nArchitecture: amd64\nSource: sqlite3\n"
+    },
+    {
+      "file": "libssl3_3.0.22-1~deb12u2_amd64.deb",
+      "size": 2039888,
+      "sha256": "cb4784740daa9b3b0eaea2b444bbefa686794afbbf3d678d238c1fd9875f2efd",
+      "metadata": "Package: libssl3\nVersion: 3.0.22-1~deb12u2\nArchitecture: amd64\nSource: openssl\n"
+    },
+    {
+      "file": "libtirpc-common_1.3.3+ds-1_all.deb",
+      "size": 14048,
+      "sha256": "3e3ef129b4bf61513144236e15e1b4ec57fa5ae3dc8a72137abdbefb7a63af85",
+      "metadata": "Package: libtirpc-common\nVersion: 1.3.3+ds-1\nArchitecture: all\nSource: libtirpc\n"
+    },
+    {
+      "file": "libtirpc-dev_1.3.3+ds-1_amd64.deb",
+      "size": 191428,
+      "sha256": "03326473eed54ffa27efae19aa5d6aeb402930968f869f318445513093691d55",
+      "metadata": "Package: libtirpc-dev\nVersion: 1.3.3+ds-1\nArchitecture: amd64\nSource: libtirpc\n"
+    },
+    {
+      "file": "libtirpc3_1.3.3+ds-1_amd64.deb",
+      "size": 85192,
+      "sha256": "2a46d5a5e9486da11ffeff5740931740d6deae4f92cd6098df060dc5dff1e1c7",
+      "metadata": "Package: libtirpc3\nVersion: 1.3.3+ds-1\nArchitecture: amd64\nSource: libtirpc\n"
+    },
+    {
+      "file": "linux-libc-dev_6.1.190-1_amd64.deb",
+      "size": 2408528,
+      "sha256": "a88a129991cbb7db1715bed232c9808b91ac0fb7149660558b9df0d074348f05",
+      "metadata": "Package: linux-libc-dev\nVersion: 6.1.190-1\nArchitecture: amd64\nSource: linux\n"
+    },
+    {
+      "file": "openssl_3.0.22-1~deb12u2_amd64.deb",
+      "size": 1441784,
+      "sha256": "5cdf0b735b1c8a96ae0bf83ed328c83c2170f8320dedb035e98705b60b2d0cfe",
+      "metadata": "Package: openssl\nVersion: 3.0.22-1~deb12u2\nArchitecture: amd64\n"
+    },
+    {
+      "file": "racket-common_8.7+dfsg1-1_all.deb",
+      "size": 14856888,
+      "sha256": "aa3c71cb62588aa4ccc959806c123d2719f655e99369b2122d30128461731ce3",
+      "metadata": "Package: racket-common\nVersion: 8.7+dfsg1-1\nArchitecture: all\nSource: racket\n"
+    },
+    {
+      "file": "racket_8.7+dfsg1-1_amd64.deb",
+      "size": 92502092,
+      "sha256": "9333aa6e632c0f42b7d9d0643150789d4a1d15f7db1bcddaf75c5e08698014ed",
+      "metadata": "Package: racket\nVersion: 8.7+dfsg1-1\nArchitecture: amd64\n"
+    },
+    {
+      "file": "readline-common_8.2-1.3_all.deb",
+      "size": 68988,
+      "sha256": "69317523fe56429aa361545416ad339d138c1500e5a604856a80dd9074b4e35c",
+      "metadata": "Package: readline-common\nVersion: 8.2-1.3\nArchitecture: all\nSource: readline\n"
+    },
+    {
+      "file": "rpcsvc-proto_1.4.3-1_amd64.deb",
+      "size": 63268,
+      "sha256": "32ac0692694f8a34cc90c895f4fc739680fb2ef0e2d4870a68833682bf1c81a3",
+      "metadata": "Package: rpcsvc-proto\nVersion: 1.4.3-1\nArchitecture: amd64\n"
+    },
+    {
+      "file": "sqlite3_3.40.1-2+deb12u2_amd64.deb",
+      "size": 353348,
+      "sha256": "58e59f7db8a88f87333c3f9896b98146fdf4dc33eda75a1f79d9100d1b819909",
+      "metadata": "Package: sqlite3\nVersion: 3.40.1-2+deb12u2\nArchitecture: amd64\n"
+    }
+  ]
+}
